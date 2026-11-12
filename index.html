@@ -5,128 +5,217 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>معجم التبصرة في اللغة</title>
     
-    <!-- Mengambil Font Arab dari Google Fonts -->
+    <!-- FAVICON (Logo kecil di tab browser) -->
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <!-- Google Fonts: Noto Naskh Arabic (Tebal & Formal untuk Judul) & Tajawal (Untuk Teks Biasa) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- Script untuk membaca file CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
     <style>
         body { 
-            background-color: #ffffff; 
+            background-color: #fcfbf9; 
             color: #333333; 
             font-family: 'Tajawal', sans-serif; 
-            padding: 20px; 
-            max-width: 1100px; 
-            margin: auto; 
+            margin: 0;
+            padding: 0;
         }
 
+        /* NAVBAR (Menu Atas) */
+        .navbar {
+            background-color: #4A3B32;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 15px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .navbar a:hover, .navbar a.active {
+            background-color: #8B7355;
+        }
+
+        /* KONTEN UTAMA */
+        .container {
+            max-width: 1100px; 
+            margin: auto; 
+            padding: 30px 20px;
+        }
+
+        /* HEADER & LOGO */
         .header-section {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 2px solid #8B7355; 
         }
-        
-        h1 { 
-            font-family: 'Amiri', serif; 
-            color: #4A3B32; 
-            font-size: 42px;
-            margin-bottom: 5px;
+        .web-logo {
+            max-width: 130px; /* Ukuran logo di halaman utama */
+            margin-bottom: 15px;
         }
-        
+        h1 { 
+            font-family: 'Noto Naskh Arabic', serif; /* Font baru: Tebal, Tegas, Formal */
+            color: #4A3B32; 
+            font-size: 46px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            margin-top: 0;
+        }
         h2 {
-            font-family: 'Amiri', serif;
+            font-family: 'Tajawal', sans-serif;
             color: #665440;
-            font-size: 24px;
-            font-weight: normal;
+            font-size: 22px;
+            font-weight: 500;
             margin-top: 0;
         }
 
-        input { 
+        /* TAB KONTEN */
+        .page-content { display: none; }
+        .page-content.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* FORM & INPUT */
+        input[type="text"], input[type="email"], textarea { 
             width: 100%; 
-            padding: 18px; 
-            font-size: 20px; 
+            padding: 15px; 
+            font-size: 18px; 
             font-family: 'Tajawal', sans-serif;
-            margin-bottom: 25px; 
+            margin-bottom: 20px; 
             border: 2px solid #8B7355; 
             border-radius: 8px; 
             box-sizing: border-box;
             background-color: #FAFAFA;
-            transition: 0.3s;
         }
-        
-        input:focus {
+        input:focus, textarea:focus {
             outline: none;
             border-color: #4A3B32;
             box-shadow: 0 0 8px rgba(74, 59, 50, 0.3);
         }
-
-        .table-responsive {
-            overflow-x: auto; 
-        }
-        
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            background: #ffffff; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-        }
-        
-        th, td { 
-            padding: 15px 12px; 
-            border: 1px solid #E0E0E0; 
-            text-align: center; 
-            vertical-align: middle;
+        button.btn-submit {
+            background-color: #4A3B32;
+            color: white;
+            border: none;
+            padding: 15px 30px;
             font-size: 18px;
-        }
-        
-        th { 
-            background-color: #4A3B32; 
-            color: #ffffff; 
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
             font-weight: 700;
-            font-size: 20px;
-            white-space: nowrap; 
+            width: 100%;
         }
-        
-        tr:nth-child(even) { 
-            background-color: #F9F8F6; 
+        button.btn-submit:hover {
+            background-color: #8B7355;
         }
-        
-        tr:hover {
-            background-color: #F0EBE1; 
+
+        /* TABEL */
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        th, td { padding: 15px 12px; border: 1px solid #E0E0E0; text-align: center; vertical-align: middle; font-size: 18px; }
+        th { background-color: #4A3B32; color: #ffffff; font-weight: 700; font-size: 20px; white-space: nowrap; }
+        tr:nth-child(even) { background-color: #F9F8F6; }
+        tr:hover { background-color: #F0EBE1; }
+
+        /* ABOUT PAGE STYLE */
+        .about-box {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            line-height: 1.8;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
-    <div class="header-section">
-        <h1>معجم التبصرة في اللغة</h1>
-        <h2>لدارسي الكتاب العربية بين يديك</h2>
+    <!-- MENU NAVIGASI (DASHBOARD) -->
+    <div class="navbar">
+        <a onclick="showPage('kamus')" id="nav-kamus" class="active">القاموس (Kamus)</a>
+        <a onclick="showPage('tentang')" id="nav-tentang">حول المعجم (Tentang)</a>
+        <a onclick="showPage('saran')" id="nav-saran">اقتراحات (Saran)</a>
     </div>
 
-    <!-- Kotak pencarian -->
-    <input type="text" id="searchInput" placeholder="ابحث عن الكلمة هنا (بدون حركات)..." onkeyup="searchKamus()">
+    <div class="container">
+        
+        <!-- HEADER UTAMA (MUNCUL DI SEMUA HALAMAN) -->
+        <div class="header-section">
+            <!-- LOGO HALAMAN UTAMA -->
+            <img src="logo.png" alt="Logo Mu'jam" class="web-logo" onerror="this.style.display='none'">
+            
+            <h1>معجم التبصرة في اللغة</h1>
+            <h2>لدارسي الكتاب العربية بين يديك</h2>
+        </div>
 
-    <!-- Wadah tabel -->
-    <div class="table-responsive">
-        <table id="resultTable">
-            <thead>
-                <tr id="tableHeader"></tr>
-            </thead>
-            <tbody id="tableBody">
-                <!-- Hasil akan muncul di sini otomatis -->
-            </tbody>
-        </table>
+        <!-- HALAMAN 1: KAMUS -->
+        <div id="page-kamus" class="page-content active">
+            <input type="text" id="searchInput" placeholder="ابحث عن الكلمة هنا (بدون حركات)..." onkeyup="searchKamus()">
+            <div class="table-responsive">
+                <table id="resultTable">
+                    <thead><tr id="tableHeader"></tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- HALAMAN 2: TENTANG -->
+        <div id="page-tentang" class="page-content">
+            <div class="about-box">
+                <h3 style="color: #4A3B32; border-bottom: 2px solid #8B7355; padding-bottom: 10px; margin-top:0;">عن المعجم (Tentang Kamus Ini)</h3>
+                <p>هذا المعجم الرقمي مصمم خصيصاً لمساعدة دارسي سلسلة "العربية بين يديك".</p>
+                <p>Kamus digital ini disusun untuk mempermudah para pelajar bahasa Arab, khususnya yang menggunakan panduan buku <em>Al-Arabiyah Bayna Yadaik</em>. Kamus ini memuat daftar kosakata (isim dan fi'il), bentuk jamak, makna singkat, sinonim, antonim, serta contoh kalimat penggunaannya.</p>
+                <p><strong>Penyusun:</strong> Gina Zulfa, S.Sos.</p>
+            </div>
+        </div>
+
+        <!-- HALAMAN 3: SARAN (FORMSPREE) -->
+        <div id="page-saran" class="page-content">
+            <div class="about-box">
+                <h3 style="color: #4A3B32; border-bottom: 2px solid #8B7355; padding-bottom: 10px; margin-top:0;">صندوق الاقتراحات (Kotak Saran)</h3>
+                <p>يسعدنا استقبال اقتراحاتكم لتطوير هذا المعجم.</p>
+                
+                <!-- GANTI 'ID_ANDA' DI BAWAH INI DENGAN ID DARI FORMSPREE -->
+                <form action="https://formspree.io/f/ID_ANDA" method="POST">
+                    <label style="display:block; margin-bottom:5px; font-weight:bold;">الاسم (Nama):</label>
+                    <input type="text" name="name" required placeholder="Tulis nama Anda...">
+                    
+                    <label style="display:block; margin-bottom:5px; font-weight:bold;">البريد الإلكتروني (Email):</label>
+                    <input type="email" name="email" required placeholder="Tulis email Anda...">
+                    
+                    <label style="display:block; margin-bottom:5px; font-weight:bold;">الاقتراح (Saran/Masukan):</label>
+                    <textarea name="message" rows="5" required placeholder="Tulis saran atau perbaikan kata di sini..."></textarea>
+                    
+                    <button type="submit" class="btn-submit">إرسال (Kirim)</button>
+                </form>
+            </div>
+        </div>
+
     </div>
 
     <script>
+        // LOGIKA PINDAH HALAMAN (TABS DASHBOARD)
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.navbar a').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('nav-' + pageId).classList.add('active');
+        }
+
+        // LOGIKA KAMUS
         let kamusData = [];
         let headers = [];
 
-        // Membaca file tabshirah.csv
         Papa.parse("tabshirah.csv", {
             download: true,
             header: true,
@@ -134,7 +223,6 @@
             complete: function(results) {
                 kamusData = results.data;
                 headers = results.meta.fields;
-
                 let headerRow = document.getElementById("tableHeader");
                 headers.forEach(header => {
                     if(header) {
@@ -146,7 +234,6 @@
             }
         });
 
-        // Menghapus harakat dan menyamakan huruf Arab
         function normalizeArabic(text) {
             if (!text) return "";
             return text.toString()
@@ -165,11 +252,9 @@
 
             let results = kamusData.filter(row => {
                 let kataArab = normalizeArabic(row[headers[0]]); 
-                // MENGGUNAKAN 'startsWith' AGAR PENCARIAN DIAWALI DENGAN HURUF TERSEBUT
                 return kataArab.startsWith(input);
             });
 
-            // Menampilkan 6 kolom yang sejajar
             results.forEach(row => {
                 let tr = document.createElement("tr");
                 headers.forEach(header => {
